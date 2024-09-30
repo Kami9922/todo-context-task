@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styles from '../css/todolist.module.css'
 import TodoInputs from './TodoInputs'
 import Todo from './Todo'
+import { TodoListContext } from '../context'
 
 const TodoList = () => {
   //Отображение
@@ -123,52 +124,49 @@ const TodoList = () => {
   }
 
   return (
-    <div className={styles['todo-container']}>
-      <button
-        className={isSearching ? styles['search-active'] : styles.search}
-        onClick={() => setIsSearching(!isSearching)}
-      >
-        Поиск дела
-      </button>
-      <TodoInputs
-        createTodo={createTodo}
-        inputSearchValue={inputSearchValue}
-        setInputSearchValue={setInputSearchValue}
-        setIsSearching={setIsSearching}
-        isSearching={isSearching}
-        setIsCreating={setIsCreating}
-        isCreating={isCreating}
-        refreshTodos={refreshTodos}
-        setInputCreateValue={setInputCreateValue}
-        inputCreateValue={inputCreateValue}
-      />
-      <button
-        onClick={sortTodosAlphabetically}
-        className={styles['sort-button']}
-      >
-        {isSortedAlphabetically
-          ? 'Отсортировать по алфавиту'
-          : 'Отсортировать по алфавиту'}
-      </button>
-      {isLoading ? (
-        <div className={styles.loader}></div>
-      ) : (
-        filteredTodos.map(({ id, title }) => (
-          <Todo
-            id={id}
-            title={title}
-            setInputUpdateValue={setInputUpdateValue}
-            isUpdating={isUpdating}
-            inputUpdateValue={inputUpdateValue}
-            updateTodo={updateTodo}
-            editingTodoId={editingTodoId}
-            startEditingTodo={startEditingTodo}
-            deleteTodo={deleteTodo}
-            isDeleting={isDeleting}
-          />
-        ))
-      )}
-    </div>
+    <TodoListContext.Provider
+      value={{
+        isUpdating,
+        setInputUpdateValue,
+        inputUpdateValue,
+        updateTodo,
+        editingTodoId,
+        startEditingTodo,
+        deleteTodo,
+        isDeleting,
+        createTodo,
+        setInputCreateValue,
+        inputCreateValue,
+        isCreating,
+        isSearching,
+        setInputSearchValue,
+      }}
+    >
+      <div className={styles['todo-container']}>
+        <button
+          className={isSearching ? styles['search-active'] : styles.search}
+          onClick={() => setIsSearching(!isSearching)}
+        >
+          Поиск дела
+        </button>
+        <TodoInputs />
+        <button
+          onClick={sortTodosAlphabetically}
+          className={styles['sort-button']}
+        >
+          {isSortedAlphabetically
+            ? 'Отсортировать по алфавиту'
+            : 'Отсортировать по алфавиту'}
+        </button>
+        {isLoading ? (
+          <div className={styles.loader}></div>
+        ) : (
+          filteredTodos.map(({ id, title }) => (
+            <Todo key={id} id={id} title={title} />
+          ))
+        )}
+      </div>
+    </TodoListContext.Provider>
   )
 }
 

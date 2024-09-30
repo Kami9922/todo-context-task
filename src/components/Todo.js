@@ -1,20 +1,21 @@
 import React from 'react'
 import styles from '../css/todolist.module.css'
+import { TodoListContext } from '../context'
+import { useContext } from 'react'
 
-const Todo = ({
-  id,
-  title,
-  setInputUpdateValue,
-  isUpdating,
-  inputUpdateValue,
-  updateTodo,
-  editingTodoId,
-  startEditingTodo,
-  deleteTodo,
-  isDeleting,
-}) => {
+const Todo = ({ id, title }) => {
+  const {
+    setInputUpdateValue,
+    isUpdating,
+    inputUpdateValue,
+    updateTodo,
+    editingTodoId,
+    startEditingTodo,
+    deleteTodo,
+    isDeleting,
+  } = useContext(TodoListContext)
   return (
-    <div className={styles.todo} key={id}>
+    <div className={styles.todo}>
       {editingTodoId === id ? (
         <form
           onSubmit={(e) => {

@@ -1,13 +1,16 @@
+import { useContext } from 'react'
 import styles from '../css/todoInputs.module.css'
+import { TodoListContext } from '../context'
 
-const TodoInput = ({
-  inputCreateValue,
-  setInputCreateValue,
-  isCreating,
-  isSearching,
-  setInputSearchValue,
-  createTodo,
-}) => {
+const TodoInput = () => {
+  const {
+    inputCreateValue,
+    setInputCreateValue,
+    isCreating,
+    isSearching,
+    setInputSearchValue,
+    createTodo,
+  } = useContext(TodoListContext)
   return (
     <div className={styles['inputs-header']}>
       {isSearching ? (
